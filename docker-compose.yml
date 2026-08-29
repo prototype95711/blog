@@ -1,0 +1,26 @@
+services:
+  blog:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: Blog
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-changeme_root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-blog}
+      MYSQL_USER: ${MYSQL_USER:-blog}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-changeme}
+      DB_HOST: 127.0.0.1
+      DB_PORT: "3306"
+      DB_DATABASE: ${MYSQL_DATABASE:-blog}
+      DB_USERNAME: ${MYSQL_USER:-blog}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-changeme}
+    volumes:
+      - blog-mysql-data:/var/lib/mysql
+      - ./public:/var/www/html/public
+      - ./src:/var/www/html/src
+
+volumes:
+  blog-mysql-data:
