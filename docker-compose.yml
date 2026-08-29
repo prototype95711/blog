@@ -21,6 +21,7 @@ services:
       - blog-mysql-data:/var/lib/mysql
       - ./public:/var/www/html/public
       - ./src:/var/www/html/src
+      - ./templates:/var/www/html/templates
 
 volumes:
   blog-mysql-data:

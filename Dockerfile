@@ -59,7 +59,9 @@ RUN composer install --no-dev --no-interaction --no-progress --prefer-dist \
 
 COPY public /var/www/html/public
 COPY src /var/www/html/src
-RUN chown -R www-data:www-data /var/www/html
+COPY templates /var/www/html/templates
+RUN mkdir -p /var/www/html/var/config /var/www/html/var/template_c /var/www/html/var/cache \
+    && chown -R www-data:www-data /var/www/html
 
 VOLUME ["/var/lib/mysql"]
 

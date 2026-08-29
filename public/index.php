@@ -1,5 +1,7 @@
 <?php
 
+use App\Template;
+
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 use App\Database;
@@ -30,30 +32,6 @@ try {
     $dbStatus = 'error: ' . $e->getMessage();
 }
 
-?>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Blog</title>
-</head>
-<body>
-    <h1>Blog</h1>
-
-    <?php foreach ($posts as $post): ?>
-        <article>
-            <h2><?= htmlspecialchars($post['title']) ?></h2>
-            <small><?= htmlspecialchars($post['category_title']) ?></small>
-            <?php if (!empty($post['image'])) { ?>
-                <img src="><?= htmlspecialchars($post['image']) ?>" />
-            <?php } ?>
-            <p><?= htmlspecialchars($post['content']) ?></p>
-            <time><?= htmlspecialchars($post['created_at']) ?></time>
-        </article>
-    <?php endforeach; ?>
-
-    <?php if (!$posts && $dbStatus === 'connected'): ?>
-        <p>No posts</p>
-    <?php endif; ?>
-</body>
-</html>
+Template::init();
+Template::getSmarty()->assign('posts', $posts);
+Template::getSmarty()->display('index.tpl');
