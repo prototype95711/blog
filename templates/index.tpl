@@ -1,4 +1,4 @@
-{$title = "Blog"}
+{$title = "Home page"}
 {capture name="content"}
     <h1>Blog</h1>
 

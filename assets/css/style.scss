@@ -2,10 +2,21 @@ $background-color: #201b5b;
 $section-background-color: white;
 $section-max-width: 800px;
 $text-color: black;
+$link-font-size: 14px;
+$hr-line-color: #e2e5e9;
 $font: 'Open Sans', sans-serif;
 
 * {
     box-sizing: border-box;
+}
+
+a {
+    font-size: $link-font-size;
+}
+
+hr {
+    border: 0;
+    border-bottom: 1px solid #e2e5e9;
 }
 
 body {
@@ -33,5 +44,31 @@ section {
         margin-top: 100px;
         margin-left: auto;
         margin-right: auto;
+    }
+}
+
+.blog {
+    &-post{
+        display: flex;
+        gap: 15px 30px;
+
+        &-image {
+            flex: 1 1 100%;
+            min-width: 40%;
+        }
+
+        &-short-description {
+            &-title {
+                display: block;
+                font-size: inherit;
+            }
+
+            &-content {
+                display: block;
+                overflow: hidden;
+                padding-block: 0;
+                line-height: 1.45;
+            }
+        }
     }
 }
