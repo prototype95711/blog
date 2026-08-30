@@ -54,15 +54,16 @@ RUN chmod +x /usr/local/bin/entrypoint.sh \
     && rm -rf /var/lib/mysql/*
 
 COPY composer.json composer.lock* /var/www/html/
-RUN composer install --no-dev --no-interaction --no-progress --prefer-dist \
+RUN composer install --no-interaction --no-progress --prefer-dist \
         --no-scripts --optimize-autoloader
 
 COPY public /var/www/html/public
 COPY src /var/www/html/src
 COPY templates /var/www/html/templates
 COPY assets /var/www/html/assets
+COPY bin /var/www/html/bin
 RUN mkdir -p /var/www/html/var/config /var/www/html/var/template_c /var/www/html/var/cache \
-        /var/www/html/public/css \
+        /var/www/html/public/css /var/www/html/public/images \
     && chown -R www-data:www-data /var/www/html
 
 VOLUME ["/var/lib/mysql"]
