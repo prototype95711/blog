@@ -1,11 +1,5 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Blog</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
+{$title = "Blog"}
+{capture name="content"}
     <h1>Blog</h1>
 
     {foreach from=$posts item=post}
@@ -21,5 +15,6 @@
     {foreachelse}
         <p>No posts</p>
     {/foreach}
-</body>
-</html>
+{/capture}
+
+{include file="common/contained_page.tpl"}

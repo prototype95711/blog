@@ -1,12 +1,77 @@
 $background-color: #201b5b;
+$section-background-color: white;
+$section-max-width: 800px;
+$text-color: black;
+$font: 'Open Sans', sans-serif;
+
+@mixin responsive_display($min: null, $max: null) {
+    @if $min and $max {
+        @media (min-width: $min) and (max-width: $max) {
+            @content;
+        }
+    } @else if $min {
+        @media (min-width: $min) {
+            @content;
+        }
+    } @else {
+        @media (max-width: $max) {
+            @content;
+        }
+    }
+}
 
 * {
     box-sizing: border-box;
 }
 
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: $font;
     overflow-x: hidden;
     margin: 0;
     background-color: $background-color;
+}
+
+section {
+    display: block;
+}
+
+.main-content {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+
+    .content {
+        width: 100%;
+        padding: 0px 15px;
+        background-color: $section-background-color;
+        border-radius: 10px;
+        margin-top: 100px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@include responsive_display($max: 767px) {
+    .display-content-width {
+        max-width: 300px;
+    }
+}
+
+@include responsive_display($min: 768px, $max: 1024px) {
+    .display-content-width {
+        max-width: 720px;
+    }
+}
+
+@include responsive_display($min: 1025px, $max: 1279px) {
+    .display-content-width {
+        max-width: 920px;
+    }
+}
+
+@include responsive_display($min: 1280px) {
+    .display-content-width {
+        max-width: 1140px;
+    }
 }
