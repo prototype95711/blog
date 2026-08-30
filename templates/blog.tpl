@@ -1,4 +1,5 @@
 {$title = "Blog"}
+{$selected_category_id = $smarty.request.category_id|default:0}
 
 {capture name="sidebar"}
     {if $categories}
@@ -6,7 +7,9 @@
             <h3 class="sidebar-block-title">Categories</h3>
             {foreach from=$categories item=category name=blog_categories}
                 <div class="sidebar-block-item">
-                    <a href="#">{$category.title}</a>
+                    <a href="#" {if $selected_category_id == $category.id}class="active"{/if}>
+                        {$category.title}
+                    </a>
                 </div>
             {/foreach}
         </div>

@@ -1,10 +1,19 @@
-$background-color: #201b5b;
+$color-primary: #201b5b;
+
+$background-color: $color-primary;
 $section-background-color: white;
 $section-max-width: 800px;
 $text-color: black;
+$text-color-lighten: #727272;
 $link-font-size: 14px;
-$hr-line-color: #e2e5e9;
+$line-color: #e2e5e9;
 $font: 'Open Sans', sans-serif;
+
+$button-height: 40px;
+$button-color: white;
+$button-color-hover: #f7f7f7;
+
+$color-primary: $color-primary;
 
 * {
     box-sizing: border-box;
@@ -12,11 +21,12 @@ $font: 'Open Sans', sans-serif;
 
 a {
     font-size: $link-font-size;
+    text-decoration: none;
 }
 
 hr {
     border: 0;
-    border-bottom: 1px solid #e2e5e9;
+    border-bottom: 1px solid $line-color;
 }
 
 body {
@@ -71,6 +81,39 @@ section {
     }
 }
 
+.pagination {
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin: 20px auto 0;
+
+    &-item {
+        flex-shrink: 0;
+        white-space: nowrap;
+        color: $text-color-lighten;
+        background-color: $button-color;
+        border: 1px solid $line-color;
+        border-radius: 10px;
+        margin: unset;
+        padding: 0 10px;
+        min-width: $button-height;
+        height: $button-height;
+        display: inline-flex;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background-color: $button-color-hover;
+        }
+    }
+
+    &-current {
+        border-color: $color-primary;
+    }
+}
+
 .blog {
     &-layout {
         display: flex;
@@ -81,6 +124,7 @@ section {
     &-posts-list {
         flex: 1;
         min-width: 0;
+        margin-bottom: 10px;
     }
 
     &-post{
