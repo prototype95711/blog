@@ -18,6 +18,23 @@
     .display-content-width {
         max-width: 300px;
     }
+
+    .blog-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        flex: 1;
+        width: 100%;
+    }
+
+    .blog-post {
+        display: block;
+    }
+
+    .blog-post-image {
+        width: 100%;
+    }
 }
 
 @include responsive_display($min: 768px, $max: 1024px) {

@@ -14,6 +14,8 @@ interface IPagination
 
     public function lastPage(): int;
 
+    public function pages(): array;
+
     public function hasNextPage(): bool;
 
     public function hasPreviousPage(): bool;

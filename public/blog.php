@@ -14,17 +14,27 @@ $posts = [];
 $paginator = null;
 
 $page = isset($_REQUEST['page']) ? max(1, (int) $_REQUEST['page']) : 1;
+$categoryId = isset($_REQUEST['category_id']) ? max(1, (int) $_REQUEST['category_id']) : 1;
 
 try {
     $blog = new Blog();
-    $paginator = $blog->getPaginatedPosts(10, $_REQUEST);
+
+    $paginator = $blog->getPaginatedPosts(2, $_REQUEST);
     $posts = $paginator->getItems();
+
+    $categoriesPaginator = $blog->getPaginatedCategories(2, $_REQUEST);
+    $categories = $categoriesPaginator->getItems();
+
 } catch (Throwable $e) {
-    print_r('error: ' . $e->getMessage());
+    die('error: ' . $e->getMessage());
 }
 
 Style::init();
 
 Template::init();
-Template::getSmarty()->assign('posts', $posts);
+Template::getSmarty()->assign([
+    'posts' => $posts,
+    'paginator' => $paginator,
+    'categories' => $categories
+]);
 Template::getSmarty()->display('blog.tpl');
