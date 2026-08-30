@@ -1,0 +1,12 @@
+$background-color: #201b5b;
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    overflow-x: hidden;
+    margin: 0;
+    background-color: $background-color;
+}

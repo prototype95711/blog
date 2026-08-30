@@ -1,10 +1,13 @@
 <?php
 
+use App\Style;
 use App\Template;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 use App\Database;
+
+\Dotenv\Dotenv::createImmutable(dirname(__DIR__))->safeLoad();
 
 header('Content-Type: text/html; charset=utf-8');
 
@@ -31,6 +34,8 @@ try {
 } catch (Throwable $e) {
     $dbStatus = 'error: ' . $e->getMessage();
 }
+
+Style::init();
 
 Template::init();
 Template::getSmarty()->assign('posts', $posts);

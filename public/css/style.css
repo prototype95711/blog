@@ -1,0 +1,9 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: "Open Sans", sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  background-color: #201b5b;
+}
