@@ -17,6 +17,7 @@ services:
       DB_DATABASE: ${MYSQL_DATABASE:-blog}
       DB_USERNAME: ${MYSQL_USER:-blog}
       DB_PASSWORD: ${MYSQL_PASSWORD:-changeme}
+      CSS_MINIFY: ${CSS_MINIFY:-false}
     volumes:
       - blog-mysql-data:/var/lib/mysql
       - ./public:/var/www/html/public

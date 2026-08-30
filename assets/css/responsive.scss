@@ -1,0 +1,39 @@
+@mixin responsive_display($min: null, $max: null) {
+    @if $min and $max {
+        @media (min-width: $min) and (max-width: $max) {
+            @content;
+        }
+    } @else if $min {
+        @media (min-width: $min) {
+            @content;
+        }
+    } @else {
+        @media (max-width: $max) {
+            @content;
+        }
+    }
+}
+
+@include responsive_display($max: 767px) {
+    .display-content-width {
+        max-width: 300px;
+    }
+}
+
+@include responsive_display($min: 768px, $max: 1024px) {
+    .display-content-width {
+        max-width: 720px;
+    }
+}
+
+@include responsive_display($min: 1025px, $max: 1279px) {
+    .display-content-width {
+        max-width: 920px;
+    }
+}
+
+@include responsive_display($min: 1280px) {
+    .display-content-width {
+        max-width: 1140px;
+    }
+}
