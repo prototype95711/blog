@@ -140,6 +140,27 @@ section {
         margin-bottom: 10px;
     }
 
+    &-sort {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 15px;
+
+        label {
+            font-size: $link-font-size;
+            color: $text-color-lighten;
+        }
+
+        select {
+            border: 1px solid $line-color;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: $link-font-size;
+            color: $text-color;
+            background-color: $button-color;
+        }
+    }
+
     &-post{
         display: flex;
         gap: 15px 30px;

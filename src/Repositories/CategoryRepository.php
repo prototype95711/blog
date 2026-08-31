@@ -7,13 +7,17 @@ use App\Database;
 use App\Interface\IPagination;
 use App\Interface\IRepository;
 use App\Pagination\Paginator;
+use App\Sorting\Sorting;
 use PDO;
 
-class CategoryRepository extends ASortedRepository implements IRepository
+class CategoryRepository extends ASortedRepository
 {
     protected function initSortings() : void
     {
-        $this->sortings = ['title' => 'categories.title', 'id' => 'categories.id'];
+        $this->sortings = [
+            new Sorting('categories.id', 'id'),
+            new Sorting('categories.title', 'title')
+        ];
     }
 
     public function getList(array $params = [], int $perPage = 0): IPagination
@@ -23,7 +27,7 @@ class CategoryRepository extends ASortedRepository implements IRepository
         $offset = ($page - 1) * $perPage;
 
         $sortBy = $params['sort_by'] ?? '';
-        $sortBy = array_key_exists($sortBy, $this->sortings)
+        $sortBy = $this->hasSorting($sortBy)
             ? $sortBy
             : $this->getFirstSorting();
 

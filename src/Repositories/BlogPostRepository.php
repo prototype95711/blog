@@ -7,13 +7,17 @@ use App\Database;
 use App\Interface\IPagination;
 use App\Interface\IRepository;
 use App\Pagination\Paginator;
+use App\Sorting\Sorting;
 use PDO;
 
-class BlogPostRepository extends ASortedRepository implements IRepository
+class BlogPostRepository extends ASortedRepository
 {
     protected function initSortings() : void
     {
-        $this->sortings = ['views' => 'posts.views', 'created_at' => 'posts.created_at'];
+        $this->sortings = [
+            new Sorting('posts.views', 'Views', ['DESC' => 'Most viewed', 'ASC' => 'Least viewed']),
+            new Sorting('posts.created_at', 'Created At', ['DESC' => 'Newest first', 'ASC' => 'Oldest first'])
+        ];
     }
 
     public function getList(array $params = [], int $perPage = 0): IPagination
@@ -22,8 +26,17 @@ class BlogPostRepository extends ASortedRepository implements IRepository
         $page = max(1, $page);
         $offset = ($page - 1) * $perPage;
 
+        $sort = $params['sort'] ?? '';
+
+        if (!empty($sort)) {
+            list($params['sort_by'], $params['sort_order']) = Sorting::parseDispatch(
+                $sort
+            );
+        }
+
         $sortBy = $params['sort_by'] ?? '';
-        $sortBy = array_key_exists($sortBy, $this->sortings)
+
+        $sortBy = $this->hasSorting($sortBy)
             ? $sortBy
             : $this->getFirstSorting();
 

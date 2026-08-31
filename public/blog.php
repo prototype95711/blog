@@ -10,19 +10,23 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 header('Content-Type: text/html; charset=utf-8');
 
-$posts = [];
+$posts = $postSortings = [];
 $paginator = null;
 
-$page = isset($_REQUEST['page']) ? max(1, (int) $_REQUEST['page']) : 1;
-$categoryId = isset($_REQUEST['category_id']) ? max(1, (int) $_REQUEST['category_id']) : 1;
+$params = $_REQUEST;
+$page = isset($params['page']) ? max(1, (int) $params['page']) : 1;
+$categoryId = isset($_REQUEST['category_id']) ? max(1, (int) $params['category_id']) : 1;
+$sort = isset($params['sort']) ? (string) $params['sort'] : '';
 
 try {
     $blog = new Blog();
 
-    $paginator = $blog->getPaginatedPosts(2, $_REQUEST);
+    $paginator = $blog->getPaginatedPosts(2, $params);
     $posts = $paginator->getItems();
 
-    $categoriesPaginator = $blog->getPaginatedCategories(2, $_REQUEST);
+    $postSortings = $blog->getPostsSortingsVariants();
+
+    $categoriesPaginator = $blog->getPaginatedCategories(2, $params);
     $categories = $categoriesPaginator->getItems();
 
 } catch (Throwable $e) {
@@ -33,8 +37,10 @@ Style::init();
 
 Template::init();
 Template::getSmarty()->assign([
+    'params' => $params,
     'posts' => $posts,
     'paginator' => $paginator,
-    'categories' => $categories
+    'categories' => $categories,
+    'postSortings' => $postSortings
 ]);
 Template::getSmarty()->display('blog.tpl');
