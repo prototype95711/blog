@@ -17,7 +17,7 @@ class CategoryRepository extends ASortedRepository
         $this->sortings = [
             new Sorting('categories.id', 'id'),
             new Sorting('categories.title', 'title'),
-            new Sorting('posts.created_at', 'postCreatedAt')
+            new Sorting('MAX(posts.created_at)', 'postCreatedAt')
         ];
     }
 
@@ -35,6 +35,8 @@ class CategoryRepository extends ASortedRepository
             list($params['sort_by'], $params['sort_order']) = Sorting::parseDispatch(
                 $sort
             );
+            $sortBy = $params['sort_by'] ?: $sortBy;
+            $sortOrder = $params['sort_order'] ?: $sortOrder;
         }
 
         $sortField = $this->getSortingField($sortBy);
