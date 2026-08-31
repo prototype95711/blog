@@ -143,4 +143,28 @@ class BlogPostRepository extends ASortedRepository
 
         return true;
     }
+
+    public function getRelated(int $id, int $limit = 5): array
+    {
+        $pdo = Database::connection();
+        $stmt = $pdo->prepare(
+            'SELECT posts.id, posts.title, posts.created_at'
+                . ', COUNT(DISTINCT shared.category_id) as shared_categories'
+            . ' FROM posts as posts'
+            . ' INNER JOIN categories_links as shared'
+                . ' ON shared.post_id = posts.id'
+            . ' WHERE posts.id != :id'
+                . ' AND shared.category_id IN ('
+                    . ' SELECT category_id FROM categories_links WHERE post_id = :id'
+                . ' )'
+            . ' GROUP BY posts.id, posts.title, posts.created_at'
+            . ' ORDER BY shared_categories DESC, posts.created_at DESC'
+            . ' LIMIT :limit'
+        );
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
 }

@@ -1,9 +1,16 @@
 {$title = $post ? "`$post.title` | Blog" : "Post not found | Blog"}
 
 {capture name="sidebar"}
+    {if $relatedPosts}
     <div class="sidebar-block">
         <h3 class="sidebar-block-title">Related posts</h3>
+        {foreach from=$relatedPosts item=relatedPost}
+            <div class="sidebar-block-item">
+                <a class="sidebar-block-item-button" href="/post.php?id={$relatedPost.id}">{$relatedPost.title nofilter}</a>
+            </div>
+        {/foreach}
     </div>
+    {/if}
 {/capture}
 
 {capture name="content"}

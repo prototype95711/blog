@@ -45,6 +45,11 @@ class Blog
         return $this->posts->addViews($id);
     }
 
+    public function getRelatedPosts(int $id, int $limit = 5): array
+    {
+        return $this->posts->getRelated($id, $limit);
+    }
+
     public function getPostsSortingsVariants(): array
     {
         $sotringsToDisplay = [];

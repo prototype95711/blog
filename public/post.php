@@ -23,16 +23,20 @@ try {
     $post = null;
 }
 
+$relatedPosts = [];
+
 if ($post === null) {
     http_response_code(404);
 } else {
 
     try {
         $added = $blog->addPostView($postId);
-        
+
         if ($added) {
             $post['views']++;
         }
+
+        $relatedPosts = $blog->getRelatedPosts($postId, 3);
 
     } catch (Throwable $e) {
         die($e->getMessage());
@@ -44,7 +48,8 @@ Style::init();
 Template::init();
 Template::getSmarty()->assign([
     'params' => $params,
-    'post' => $post
+    'post' => $post,
+    'relatedPosts' => $relatedPosts
 ]);
 
 Template::getSmarty()->display('post.tpl');
