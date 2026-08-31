@@ -11,7 +11,7 @@
     <body>
         <main>
             <section class="main-content display-content-width">
-                <div class="content">
+                <div class="content {if $smarty.capture.sidebar}with-sidebar{/if}">
                     {$smarty.capture.content nofilter}
                 </div>
             </section>

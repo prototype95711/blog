@@ -40,9 +40,16 @@ class CategoryRepository extends ASortedRepository
         $condition['parent_id'] = 'categories.parent_id = :parent_id';
         $vars['parent_id'] = $parentId;
 
+        if (!empty($params['with_posts'])) {
+            $request .= ' INNER JOIN categories_links AS categories_links'
+                . ' ON categories_links.category_id = categories.id';
+        }
+
         if (!empty($condition)) {
             $request .= ' WHERE ' . implode(' AND ', $condition);
         }
+
+        $request .= ' GROUP BY categories.id';
 
         $countStmt = $pdo->prepare('SELECT COUNT(*) ' . $request);
 

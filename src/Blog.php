@@ -35,6 +35,14 @@ class Blog
         return $this->categories->get($id);
     }
 
+    public function getCategoriesWithPosts(array $params = [], int $perPage = 10): IPagination
+    {
+        return $this->categories->getList(
+            array_merge($params, ['with_posts' => true, 'category_id' => 0]), 
+            $perPage
+        );
+    }
+
     public function getPost(int $id): ?array
     {
         return $this->posts->get($id);
