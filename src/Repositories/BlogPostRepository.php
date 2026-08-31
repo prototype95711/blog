@@ -78,7 +78,7 @@ class BlogPostRepository extends ASortedRepository
         $total = (int) $total->fetchColumn();
         
         $fullRequest =
-            'SELECT posts.id, posts.title, posts.content, posts.created_at, posts.views'
+            'SELECT posts.id, posts.title, posts.descr, posts.created_at, posts.views'
                 . ', category.title as category_title'
                 . ', image.filepath as image'
             . $request;
@@ -114,7 +114,7 @@ class BlogPostRepository extends ASortedRepository
     {
         $pdo = Database::connection();
         $stmt = $pdo->prepare(
-            'SELECT posts.id, posts.title, posts.content, posts.created_at, posts.views'
+            'SELECT posts.id, posts.title, posts.descr, posts.content, posts.created_at, posts.views'
                 . ', category.id as category_id, category.title as category_title'
                 . ', image.filepath as image'
             . ' FROM posts as posts'

@@ -68,8 +68,8 @@ echo "Seeding posts...\n";
 
 $insertImage = $pdo->prepare('INSERT INTO images (filepath) VALUES (:filepath)');
 $insertPost = $pdo->prepare(
-    'INSERT INTO posts (title, content, image_id, views, created_at)'
-    . ' VALUES (:title, :content, :image_id, :views, :created_at)'
+    'INSERT INTO posts (title, descr, content, image_id, views, created_at)'
+    . ' VALUES (:title, :descr, :content, :image_id, :views, :created_at)'
 );
 $insertLink = $pdo->prepare('INSERT INTO categories_links (category_id, post_id) VALUES (:category_id, :post_id)');
 
@@ -84,6 +84,7 @@ for ($i = 0; $i < $postsCount; $i++) {
 
     $insertPost->execute([
         'title' => $title,
+        'descr' => $faker->paragraphs(1, true),
         'content' => $faker->paragraphs(3, true),
         'image_id' => $imageId,
         'views' => $faker->numberBetween(0, 500),
