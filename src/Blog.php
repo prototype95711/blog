@@ -35,6 +35,16 @@ class Blog
         return $this->categories->get($id);
     }
 
+    public function getPost(int $id): ?array
+    {
+        return $this->posts->get($id);
+    }
+
+    public function addPostView(int $id): bool
+    {
+        return $this->posts->addViews($id);
+    }
+
     public function getPostsSortingsVariants(): array
     {
         $sotringsToDisplay = [];

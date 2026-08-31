@@ -23,11 +23,13 @@ $color-primary: $color-primary;
 a {
     font-size: $link-font-size;
     text-decoration: none;
+    color: $color-primary;
 }
 
 hr {
     border: 0;
     border-bottom: 1px solid $line-color;
+    margin: 20px 0px;
 }
 
 body {
@@ -286,6 +288,23 @@ section {
                 padding-block: 0;
                 line-height: 1.45;
             }
+        }
+    }
+
+    &-post-details {
+        &-image img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        &-meta {
+            color: $text-color-lighten;
+            font-size: $link-font-size;
+            margin-bottom: 15px;
+        }
+
+        &-content {
+            line-height: 1.6;
         }
     }
 }

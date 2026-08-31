@@ -78,7 +78,7 @@ class BlogPostRepository extends ASortedRepository
         $total = (int) $total->fetchColumn();
         
         $fullRequest =
-            'SELECT posts.id, posts.title, posts.content, posts.created_at'
+            'SELECT posts.id, posts.title, posts.content, posts.created_at, posts.views'
                 . ', category.title as category_title'
                 . ', image.filepath as image'
             . $request;
@@ -108,5 +108,39 @@ class BlogPostRepository extends ASortedRepository
         $stmt->execute();
 
         return new Paginator($stmt->fetchAll(), $total, $perPage, $page);
+    }
+
+    public function get(int $id): ?array
+    {
+        $pdo = Database::connection();
+        $stmt = $pdo->prepare(
+            'SELECT posts.id, posts.title, posts.content, posts.created_at, posts.views'
+                . ', category.id as category_id, category.title as category_title'
+                . ', image.filepath as image'
+            . ' FROM posts as posts'
+            . ' LEFT JOIN categories_links as categories_links'
+                . ' ON categories_links.post_id = posts.id'
+            . ' LEFT JOIN categories as category'
+                . ' ON category.id = categories_links.category_id'
+            . ' LEFT JOIN images as image'
+                . ' ON image.id = posts.image_id'
+            . ' WHERE posts.id = :id'
+        );
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $post = $stmt->fetch();
+
+        return $post !== false ? $post : null;
+    }
+
+    public function addViews(int $id): bool
+    {
+        $pdo = Database::connection();
+        $stmt = $pdo->prepare('UPDATE posts SET views = views + 1 WHERE id = :id');
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return true;
     }
 }
