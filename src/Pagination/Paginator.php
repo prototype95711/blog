@@ -43,9 +43,24 @@ class Paginator implements IPagination
         return (int) max(1, (int) ceil($this->total / $this->perPage));
     }
 
-    public function pages(): array
+    public function pages(int $rangeSize = 0): array
     {
-        return range(1, $this->lastPage());
+        $lastPage = $this->lastPage();
+
+        if ($rangeSize <= 0 || $rangeSize >= $lastPage) {
+            return range(1, $lastPage);
+        }
+
+        $half = (int) floor($rangeSize / 2);
+        $start = max(1, $this->currentPage - $half);
+        $end = $start + $rangeSize - 1;
+
+        if ($end > $lastPage) {
+            $end = $lastPage;
+            $start = max(1, $end - $rangeSize + 1);
+        }
+
+        return range($start, $end);
     }
 
     public function hasNextPage(): bool

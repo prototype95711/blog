@@ -6,7 +6,7 @@
         <a class="pagination-item pagination-prev" href="?page={$paginator->currentPage() - 1}{$extra nofilter}">&laquo; Prev</a>
     {/if}
 
-    {foreach from=$paginator->pages() item=pageNumber}
+    {foreach from=$paginator->pages(5) item=pageNumber}
         {if $pageNumber == $paginator->currentPage()}
             <span class="pagination-item pagination-current">{$pageNumber}</span>
         {else}

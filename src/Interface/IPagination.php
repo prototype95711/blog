@@ -14,7 +14,7 @@ interface IPagination
 
     public function lastPage(): int;
 
-    public function pages(): array;
+    public function pages(int $max = 0): array;
 
     public function hasNextPage(): bool;
 
