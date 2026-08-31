@@ -34,7 +34,11 @@
 {/capture}
 
 {capture name="content"}
-    <h1>Blog</h1>
+    <h1>{$selectedCategory.title|default:"Blog"}</h1>
+
+    {if $selectedCategory.descr}
+        <p class="category-description">{$selectedCategory.descr nofilter}</p>
+    {/if}
 
     <div class="blog-layout">
         <div class="blog-posts-list">
