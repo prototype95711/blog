@@ -26,7 +26,7 @@ try {
 
     $postSortings = $blog->getPostsSortingsVariants();
 
-    $categoriesPaginator = $blog->getPaginatedCategories(2, $params);
+    $categoriesPaginator = $blog->getPaginatedCategories(10, $params);
     $categories = $categoriesPaginator->getItems();
 
 } catch (Throwable $e) {
@@ -40,6 +40,7 @@ Template::getSmarty()->assign([
     'params' => $params,
     'posts' => $posts,
     'paginator' => $paginator,
+    'categorisPaginator' => $categoriesPaginator,
     'categories' => $categories,
     'postSortings' => $postSortings
 ]);

@@ -22,19 +22,12 @@ class CategoryRepository extends ASortedRepository
 
     public function getList(array $params = [], int $perPage = 0): IPagination
     {
-        $page = $params['page'] ?? 1;
+        $page = $params['c_page'] ?? 1;
         $page = max(1, $page);
         $offset = ($page - 1) * $perPage;
 
-        $sortBy = $params['sort_by'] ?? '';
-        $sortBy = $this->hasSorting($sortBy)
-            ? $sortBy
-            : $this->getFirstSorting();
-
-        $sortOrder = $params['sort_order'] ?? '';
-        $sortOrder = array_key_exists($sortOrder, self::SORT_ORDER)
-            ? $sortOrder
-            : $this->getDefaultOrder();
+        $sortBy = $this->getFirstSorting();
+        $sortOrder = $this->getDefaultOrder();
 
         $sortField = $this->getSortingField($sortBy);
 

@@ -6,13 +6,16 @@
     {if $categories}
         <div class="sidebar-block">
             <h3 class="sidebar-block-title">Categories</h3>
+            <div class="sidebar-block-items">
             {foreach from=$categories item=category name=blog_categories}
-                <div class="sidebar-block-item">
-                    <a href="#" {if $selected_category_id == $category.id}class="active"{/if}>
+                {$is_last = $smarty.foreach.blog_categories.last.id == $category.id}
+                <div class="sidebar-block-item {if $is_last && $paginator->lastPage() > 1}overheaded{/if}">
+                    <a href="?category_id={$category.id}" {if $selected_category_id == $category.id}class="active"{/if}>
                         {$category.title}
                     </a>
                 </div>
             {/foreach}
+            </div>
         </div>
     {/if}
 {/capture}
@@ -52,7 +55,7 @@
             {/if}
         </div>
         {if $smarty.capture.sidebar}
-            <div class="sidebar">
+            <div class="sidebar sticky">
                 {$smarty.capture.sidebar nofilter}
             </div>
         {/if}
