@@ -12,5 +12,6 @@
         <time>{$post.created_at}</time> &middot; {$post.views} views
         <h2 class="blog-post-short-description-title"><a href="/post.php?id={$post.id}">{$post.title nofilter}</a></h2>
         <p class="blog-post-short-description-content">{$post.descr nofilter}</p>
+        <a class="primary-button" href="/post.php?id={$post.id}">Read more</a>
     </div>
 </article>

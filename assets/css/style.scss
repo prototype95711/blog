@@ -1,4 +1,5 @@
 $color-primary: #201b5b;
+$color-primary-hover: #362d9a;
 $color-secondary: #ff5f00;
 
 $background-color: $color-primary;
@@ -24,6 +25,17 @@ a {
     font-size: $link-font-size;
     text-decoration: none;
     color: $color-primary;
+}
+
+.primary-button {
+    background-color: $color-primary;
+    color: $button-color;
+    padding: 10px 10px;
+    border-radius: 5px;
+
+    &:hover {
+        background-color: $color-primary-hover;
+    }
 }
 
 hr {

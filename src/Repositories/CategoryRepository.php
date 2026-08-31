@@ -36,11 +36,9 @@ class CategoryRepository extends ASortedRepository
 
         $condition = $vars = [];
         $parentId = isset($params['category_id']) ? max(0, $params['category_id']) : 0;
-
-        if ($parentId > 0) {
-            $condition['parent_id'] = 'categories.parent_id = :parent_id';
-            $vars['parent_id'] = $parentId;
-        }
+        
+        $condition['parent_id'] = 'categories.parent_id = :parent_id';
+        $vars['parent_id'] = $parentId;
 
         if (!empty($condition)) {
             $request .= ' WHERE ' . implode(' AND ', $condition);
