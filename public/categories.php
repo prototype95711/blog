@@ -36,7 +36,11 @@ if ($isAjax) {
 
     echo json_encode([
         'html' => $html,
+        'categories' => array_map(
+            fn ($category) => ['id' => (int) $category['id'], 'title' => $category['title']],
+            $paginator->getItems()
+        ),
         'hasNextPage' => $paginator->hasNextPage()
-    ]);   
+    ]);
     exit;
 }

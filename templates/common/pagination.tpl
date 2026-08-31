@@ -1,12 +1,13 @@
 {$category = $params.category_id|default:0 ? "&category_id=`$params.category_id`" : ""}
 {$sort = $params.sort|default:'' ? "&sort=`$params.sort`" : ""}
 {$extra = "{$category nofilter}{$sort nofilter}"}
+{$pages_range = $isMobile ? 3 : 5}
 <nav class="pagination" aria-label="Pagination">
     {if $paginator->hasPreviousPage()}
         <a class="pagination-item pagination-prev" href="?page={$paginator->currentPage() - 1}{$extra nofilter}">&laquo; Prev</a>
     {/if}
 
-    {foreach from=$paginator->pages(5) item=pageNumber}
+    {foreach from=$paginator->pages($pages_range) item=pageNumber}
         {if $pageNumber == $paginator->currentPage()}
             <span class="pagination-item pagination-current">{$pageNumber}</span>
         {else}

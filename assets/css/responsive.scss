@@ -32,13 +32,22 @@
     .sidebar {
         flex: 1;
         width: 100%;
-    }
+        
+        &-block {
 
-    .blog-post {
-        display: block;
+            &-item {
+                .active {
+                    display: none;
+                }
+            }
+            
+            &-categories {
+                display: none;
+            }
 
-        &-image {
-            width: 100%;
+            .category-select-mobile {
+                display: block;
+            }
         }
     }
 
@@ -60,6 +69,16 @@
 @include responsive_display($min: 1025px, $max: 1279px) {
     .display-content-width {
         max-width: 920px;
+    }
+}
+
+@include responsive_display($max: 1280px) {
+    .blog-post {
+        display: block;
+
+        &-image {
+            width: 100%;
+        }
     }
 }
 

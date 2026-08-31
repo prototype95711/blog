@@ -12,23 +12,37 @@
 {capture name="sidebar"}
     <div class="sidebar-block">
         <h3 class="sidebar-block-title">Categories</h3>
-        <div class="sidebar-block-items sidebar-block-categories {if $has_pages}has-more{/if}"
+
+        {if $isMobile}
+            <button
+                type="button"
+                id="category_select_mobile_toggle"
+                class="category-select-mobile-toggle"
+                aria-expanded="false"
+                aria-controls="category_list"
+            >
+                {$selectedCategory.title|default:"Root category"}
+            </button>
+        {/if}
+
+        <div
+            id="category_list"
+            class="sidebar-block-items sidebar-block-categories {if $isMobile}sidebar-block-categories-mobile{/if} {if $has_pages}has-more{/if}"
             data-has-next="{if $has_pages}true{else}false{/if}"
             data-category-id="{$selected_category_id}"
-            data-page="1" 
+            data-page="1"
         >
-        
-        {if $selected_category_id}
-            <div class="sidebar-block-item">
-                <a href="?category_id={$selectedCategory.parent_id}">..</a> / <span class="active">{$selectedCategory.title}</span>
-            </div>
-        {/if}
-        {foreach from=$categories item=category name=blog_categories}
-            {$is_last = $smarty.foreach.blog_categories.last.id == $category.id}
-            {include file="components/blog/category.tpl"}
-        {foreachelse}
-            <small>No categories yet.</small>
-        {/foreach}
+            {if $selected_category_id}
+                <div class="sidebar-block-item">
+                    <a href="?category_id={$selectedCategory.parent_id}">..</a> / <span class="active">{$selectedCategory.title}</span>
+                </div>
+            {/if}
+            {foreach from=$categories item=category name=blog_categories}
+                {$is_last = $smarty.foreach.blog_categories.last.id == $category.id}
+                {include file="components/blog/category.tpl"}
+            {foreachelse}
+                <small>No categories yet.</small>
+            {/foreach}
         </div>
     </div>
 {/capture}
@@ -36,8 +50,10 @@
 {capture name="content"}
     <h1>{$selectedCategory.title|default:"Blog"}</h1>
 
-    {if $selectedCategory.descr}
-        <p class="category-description">{$selectedCategory.descr nofilter}</p>
+    {if $selected_category_id}
+        {if $selectedCategory.descr}
+            <p class="category-description">{$selectedCategory.descr nofilter}</p>
+        {/if}
     {/if}
 
     <div class="blog-layout">
@@ -84,11 +100,13 @@
 <script>
 (function () {
     var container = document.querySelector('.sidebar-block-categories');
+    var toggle = document.getElementById('category_select_mobile_toggle');
 
     if (!container) {
         return;
     }
 
+    var isMobile = container.classList.contains('sidebar-block-categories-mobile');
     var page = parseInt(container.dataset.page || '1'),
         hasNext = container.dataset.hasNext === 'true',
         categoryId = container.dataset.categoryId || '',
@@ -102,10 +120,31 @@
         }
     });
 
-    fillUntilScrollable();
+    if (toggle) {
+        toggle.addEventListener('click', function () {
+            var expanded = container.classList.toggle('expanded');
+            toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+
+            if (expanded) {
+                fillUntilScrollable();
+            }
+        });
+
+        document.addEventListener('click', function (event) {
+            if (!container.classList.contains('expanded')) {
+                return;
+            }
+
+            if (!container.contains(event.target) && event.target !== toggle) {
+                container.classList.remove('expanded');
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    } else {
+        fillUntilScrollable();
+    }
 
     function loadMore() {
-
         if (loading || !hasNext) {
             return;
         }
@@ -139,6 +178,10 @@
     }
 
     function fillUntilScrollable() {
+        if (isMobile && !container.classList.contains('expanded')) {
+            return;
+        }
+
         if (hasNext && !isOverflowing()) {
             loadMore();
         }
