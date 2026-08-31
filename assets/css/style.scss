@@ -343,6 +343,8 @@ section {
             border-radius: 10px;
             overflow: hidden;
             transition: box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
 
             &-image {
                 overflow: hidden;
@@ -365,6 +367,15 @@ section {
 
             &-data {
                 padding: 15px;
+            }
+
+            &-buttons {
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
+                gap: 10px;
+                margin-top: auto;
+                padding: 0 15px 15px;
             }
 
             &-title {

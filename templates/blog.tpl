@@ -41,7 +41,7 @@
                 {$is_last = $smarty.foreach.blog_categories.last.id == $category.id}
                 {include file="components/blog/category.tpl"}
             {foreachelse}
-                <small>No categories yet.</small>
+                <small>No {if $selected_category_id}Sub{/if}categories yet.</small>
             {/foreach}
         </div>
     </div>

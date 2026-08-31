@@ -28,6 +28,9 @@
                                     {/foreach}
                                 </ul>
                             </div>
+                            <div class="category-item-buttons">
+                                <a class="primary-button" href="/blog.php?category_id={$category.id}">All posts</a>
+                            </div>
                         </div>
                     {/foreach}
                 </div>
