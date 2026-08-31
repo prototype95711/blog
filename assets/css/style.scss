@@ -341,10 +341,25 @@ section {
             min-width: 220px;
             border: 1px solid $line-color;
             border-radius: 10px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
 
             &-image {
+                overflow: hidden;
+
                 img {
+                    display: block;
+                    width: 100%;
                     border-radius: 10px 10px 0 0;
+                    transition: transform 0.3s ease;
+                }
+            }
+
+            &:hover {
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+
+                .category-item-image img {
+                    transform: scale(1.08);
                 }
             }
 

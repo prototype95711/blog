@@ -11,11 +11,13 @@
                     {foreach from=$categoriesWithRecentPosts item=category}
                         <div class="category-item">
                             <div class="category-item-image">
-                                <img src="{$category.image}" />
+                                <a href="/blog.php?category_id={$category.id}">
+                                    <img src="{$category.image}" />
+                                </a>
                             </div>
                             <div class="category-item-data">
                                 <h3 class="category-item-title">
-                                    <a href="?category_id={$category.category.id}">{$category.title nofilter}</a>
+                                    <a href="/blog.php?category_id={$category.id}">{$category.title nofilter}</a>
                                 </h3>
                                 <ul class="category-item-posts">
                                     {foreach from=$category.recent_posts item=recentPost}
