@@ -19,6 +19,12 @@
         max-width: 300px;
     }
 
+    .main-content {
+        .content {
+            padding: 15px;
+        }
+    }
+
     .blog-layout {
         flex-direction: column;
     }
@@ -30,10 +36,18 @@
 
     .blog-post {
         display: block;
+
+        &-image {
+            width: 100%;
+        }
     }
 
-    .blog-post-image {
-        width: 100%;
+    .pagination {
+        display: block;
+
+        &-item {
+            margin-bottom: 5px;
+        }
     }
 }
 
