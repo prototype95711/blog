@@ -31,7 +31,7 @@ try {
     $postSortings = $blog->getPostsSortingsVariants();
 
     $categoriesPerPage = filter_var(getenv('CATEGORIES_PER_PAGE'), FILTER_VALIDATE_INT);
-    $categoriesPaginator = $blog->getPaginatedCategories($categoriesPerPage, $params);
+    $categoriesPaginator = $blog->getPaginatedCategories($categoriesPerPage, array_merge($params, ['sort' => '']));
     $categories = $categoriesPaginator->getItems();
 
     $selectedCategory = $categoryId > 0 ? $blog->getCategory($categoryId) : null;

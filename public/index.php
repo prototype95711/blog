@@ -1,29 +1,20 @@
 <?php
 
 use App\Blog;
-use App\Pagination\Paginator;
 use App\Style;
 use App\Template;
-use Detection\MobileDetect;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 \Dotenv\Dotenv::createImmutable(dirname(__DIR__))->safeLoad();
 
-header('Content-Type: text/html; charset=utf-8');
-
 $params = $_REQUEST;
 $blog = new Blog();
+$isAjax = !empty($params['is_ajax']);
 
-$categoriesPaginator = null;
-$categoriesPerPage = 10;
-$categoriesWithRecentPosts = [];
-
-try {
-    $categoriesPaginator = $blog->getCategoriesWithPosts($params, 10);
-    $categoriesWithRecentPosts = $categoriesPaginator->getItems();
-
-    array_walk($categoriesWithRecentPosts, function (&$cat) use ($blog) {
+function prepareCategoriesWithRecentPosts(Blog $blog, array $categories): array
+{
+    array_walk($categories, function (&$cat) use ($blog) {
         $recentPosts = $blog->getPaginatedPosts(3, [
             'category_id' => $cat['id'],
             'sort_by' => 'CreatedAt',
@@ -40,6 +31,49 @@ try {
             ? ''
             : $firstPost['image'];
     });
+
+    return $categories;
+}
+
+$perpage = 8;
+
+if ($isAjax) {
+    header('Content-Type: application/json; charset=utf-8');
+
+    try {
+        $categoriesPaginator = $blog->getCategoriesWithPosts($params, $perpage);
+        $categoriesWithRecentPosts = prepareCategoriesWithRecentPosts($blog, $categoriesPaginator->getItems());
+    } catch (Throwable $e) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Unable to load']);
+        exit;
+    }
+
+    Style::init();
+    Template::init();
+
+    $html = '';
+
+    foreach ($categoriesWithRecentPosts as $category) {
+        Template::getSmarty()->assign('category', $category);
+        $html .= Template::getSmarty()->fetch('components/home/category_item.tpl');
+    }
+
+    echo json_encode([
+        'html' => $html,
+        'hasNextPage' => $categoriesPaginator->hasNextPage()
+    ]);
+    exit;
+}
+
+header('Content-Type: text/html; charset=utf-8');
+
+$categoriesPaginator = null;
+$categoriesWithRecentPosts = [];
+
+try {
+    $categoriesPaginator = $blog->getCategoriesWithPosts($params, $perpage);
+    $categoriesWithRecentPosts = prepareCategoriesWithRecentPosts($blog, $categoriesPaginator->getItems());
 } catch (Throwable $e) {
     die($e->getMessage());
 }

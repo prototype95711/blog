@@ -38,7 +38,7 @@ class Blog
     public function getCategoriesWithPosts(array $params = [], int $perPage = 10): IPagination
     {
         return $this->categories->getList(
-            array_merge($params, ['with_posts' => true, 'category_id' => 0]), 
+            array_merge($params, ['with_posts' => true, 'category_id' => 0, 'sort' => 'postCreatedAt:DESC']), 
             $perPage
         );
     }

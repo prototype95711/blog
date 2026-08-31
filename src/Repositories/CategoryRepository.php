@@ -16,7 +16,8 @@ class CategoryRepository extends ASortedRepository
     {
         $this->sortings = [
             new Sorting('categories.id', 'id'),
-            new Sorting('categories.title', 'title')
+            new Sorting('categories.title', 'title'),
+            new Sorting('posts.created_at', 'postCreatedAt')
         ];
     }
 
@@ -28,6 +29,13 @@ class CategoryRepository extends ASortedRepository
 
         $sortBy = $this->getFirstSorting();
         $sortOrder = $this->getDefaultOrder();
+        $sort = $params['sort'] ?? '';
+
+        if (!empty($sort)) {
+            list($params['sort_by'], $params['sort_order']) = Sorting::parseDispatch(
+                $sort
+            );
+        }
 
         $sortField = $this->getSortingField($sortBy);
 
@@ -43,15 +51,16 @@ class CategoryRepository extends ASortedRepository
         if (!empty($params['with_posts'])) {
             $request .= ' INNER JOIN categories_links AS categories_links'
                 . ' ON categories_links.category_id = categories.id';
+
+            $request .= ' INNER JOIN posts AS posts'
+                . ' ON posts.id = categories_links.post_id';
         }
 
         if (!empty($condition)) {
             $request .= ' WHERE ' . implode(' AND ', $condition);
         }
 
-        $request .= ' GROUP BY categories.id';
-
-        $countStmt = $pdo->prepare('SELECT COUNT(*) ' . $request);
+        $countStmt = $pdo->prepare('SELECT COUNT(DISTINCT categories.id) ' . $request);
 
         foreach ($vars as $name => $value) {
             $countStmt->bindValue(':' . $name, $value, PDO::PARAM_STR);
@@ -59,6 +68,8 @@ class CategoryRepository extends ASortedRepository
 
         $countStmt->execute();
         $total = (int) $countStmt->fetchColumn();
+
+        $request .= ' GROUP BY categories.id';
 
         $fullRequest =
             'SELECT categories.id, categories.title, categories.descr, categories.parent_id'

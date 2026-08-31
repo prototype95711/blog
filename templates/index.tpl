@@ -7,31 +7,14 @@
     <div class="blog-layout">
         <div class="blog-categories-list">
             {if $categoriesWithRecentPosts}
-                <div class="category">
+                <div
+                    class="category"
+                    id="categories_view"
+                    data-page="1"
+                    data-has-next="{if $has_pages}true{else}false{/if}"
+                >
                     {foreach from=$categoriesWithRecentPosts item=category}
-                        <div class="category-item">
-                            <div class="category-item-image">
-                                <a href="/blog.php?category_id={$category.id}">
-                                    <img src="{$category.image}" />
-                                </a>
-                            </div>
-                            <div class="category-item-data">
-                                <h3 class="category-item-title">
-                                    <a href="/blog.php?category_id={$category.id}">{$category.title nofilter}</a>
-                                </h3>
-                                <ul class="category-item-posts">
-                                    {foreach from=$category.recent_posts item=recentPost}
-                                        <li>
-                                            <a href="/post.php?id={$recentPost.id}">{$recentPost.title nofilter}</a>
-                                            <time>{$recentPost.created_at}</time>
-                                        </li>
-                                    {/foreach}
-                                </ul>
-                            </div>
-                            <div class="category-item-buttons">
-                                <a class="primary-button" href="/blog.php?category_id={$category.id}">All posts</a>
-                            </div>
-                        </div>
+                        {include file="components/home/category_item.tpl"}
                     {/foreach}
                 </div>
             {else}
@@ -42,3 +25,51 @@
 {/capture}
 
 {include file="common/contained_page.tpl"}
+
+<script>
+(function () {
+    var container = document.getElementById('categories_view');
+
+    if (!container) {
+        return;
+    }
+
+    var page = parseInt(container.dataset.page || '1'),
+        hasNext = container.dataset.hasNext === 'true',
+        loading = false;
+
+    window.addEventListener('scroll', function () {
+        var threshold = 200;
+
+        if (window.scrollY + window.innerHeight >= document.body.scrollHeight - threshold) {
+            loadMore();
+        }
+    });
+
+    function loadMore() {
+        if (loading || !hasNext) {
+            return;
+        }
+
+        loading = true;
+
+        var nextPage = page + 1;
+        var url = '/?is_ajax=1&c_page=' + nextPage;
+
+        fetch(url)
+            .then(function (response) { return response.json(); })
+            .then(function (data) {
+                container.insertAdjacentHTML('beforeend', data.html || '');
+                page = nextPage;
+                hasNext = data.hasNextPage;
+                container.dataset.hasNext = hasNext ? 'true' : 'false';
+            })
+            .catch(function () {
+                hasNext = false;
+            })
+            .finally(function () {
+                loading = false;
+            });
+    }
+})();
+</script>
