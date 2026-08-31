@@ -11,7 +11,7 @@
 
 {capture name="sidebar"}
     <div class="sidebar-block">
-        <h3 class="sidebar-block-title">Categories</h3>
+        <h3 class="sidebar-block-title">Category</h3>
 
         {if $isMobile}
             <button
@@ -34,7 +34,7 @@
         >
             {if $selected_category_id}
                 <div class="sidebar-block-item">
-                    <a href="?category_id={$selectedCategory.parent_id}">..</a> / <span class="active">{$selectedCategory.title}</span>
+                    <a class="sidebar-block-item-button" href="?category_id={$selectedCategory.parent_id}">..</a>
                 </div>
             {/if}
             {foreach from=$categories item=category name=blog_categories}

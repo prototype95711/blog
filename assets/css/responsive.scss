@@ -34,7 +34,12 @@
         width: 100%;
         
         &-block {
-
+            &-title {
+                text-align: center;
+                padding: 0;
+                border: 0;
+            }
+            
             &-item {
                 .active {
                     display: none;
