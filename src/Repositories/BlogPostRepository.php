@@ -71,7 +71,7 @@ class BlogPostRepository extends ASortedRepository
         $total = $pdo->prepare('SELECT COUNT(*) ' . $request);
 
         foreach ($vars as $name => $value) {
-            $total->bindValue(':' . $name, $value, PDO::PARAM_INT);
+            $total->bindValue(':' . $name, $value, PDO::PARAM_STR);
         }
 
         $total->execute();
@@ -97,7 +97,7 @@ class BlogPostRepository extends ASortedRepository
         $stmt = $pdo->prepare($fullRequest);
 
         foreach ($vars as $name => $value) {
-            $stmt->bindValue(':' . $name, $value, PDO::PARAM_INT);
+            $stmt->bindValue(':' . $name, $value, PDO::PARAM_STR);
         }
 
         if ($isNeedPagination) {

@@ -17,7 +17,7 @@ Author: Gleb Perfiliev
 
 ```bash
 docker exec Blog php bin/seeding.php
-  [--categories=N] [--posts=N] [--reset] 
+  [--categories=N] [--posts=N] [--clear] 
 ```
 
 Where:

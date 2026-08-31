@@ -26,8 +26,11 @@ try {
 
     $postSortings = $blog->getPostsSortingsVariants();
 
-    $categoriesPaginator = $blog->getPaginatedCategories(10, $params);
+    $categoriesPerPage = filter_var(getenv('CATEGORIES_PER_PAGE'), FILTER_VALIDATE_INT);
+    $categoriesPaginator = $blog->getPaginatedCategories($categoriesPerPage, $params);
     $categories = $categoriesPaginator->getItems();
+
+    $selectedCategory = $categoryId > 0 ? $blog->getCategory($categoryId) : null;
 
 } catch (Throwable $e) {
     die('error: ' . $e->getMessage());
@@ -40,8 +43,9 @@ Template::getSmarty()->assign([
     'params' => $params,
     'posts' => $posts,
     'paginator' => $paginator,
-    'categorisPaginator' => $categoriesPaginator,
+    'categoriesPaginator' => $categoriesPaginator,
     'categories' => $categories,
+    'selectedCategory' => $selectedCategory,
     'postSortings' => $postSortings
 ]);
 Template::getSmarty()->display('blog.tpl');

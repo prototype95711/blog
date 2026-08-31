@@ -35,7 +35,7 @@ class CategoryRepository extends ASortedRepository
         $request = ' FROM categories as categories';
 
         $condition = $vars = [];
-        $parentId = isset($params['parent_id']) ? max(0, $params['parent_id']) : 0;
+        $parentId = isset($params['category_id']) ? max(0, $params['category_id']) : 0;
 
         if ($parentId > 0) {
             $condition['parent_id'] = 'categories.parent_id = :parent_id';
@@ -49,7 +49,7 @@ class CategoryRepository extends ASortedRepository
         $countStmt = $pdo->prepare('SELECT COUNT(*) ' . $request);
 
         foreach ($vars as $name => $value) {
-            $countStmt->bindValue(':' . $name, $value, PDO::PARAM_INT);
+            $countStmt->bindValue(':' . $name, $value, PDO::PARAM_STR);
         }
 
         $countStmt->execute();
@@ -72,7 +72,7 @@ class CategoryRepository extends ASortedRepository
         $stmt = $pdo->prepare($fullRequest);
 
         foreach ($vars as $name => $value) {
-            $stmt->bindValue(':' . $name, $value, PDO::PARAM_INT);
+            $stmt->bindValue(':' . $name, $value, PDO::PARAM_STR);
         }
 
         if ($isNeedPagination) {
@@ -83,5 +83,17 @@ class CategoryRepository extends ASortedRepository
         $stmt->execute();
 
         return new Paginator($stmt->fetchAll(), $total, $perPage, $page);
+    }
+
+    public function get(int $id): ?array
+    {
+        $pdo = Database::connection();
+        $stmt = $pdo->prepare('SELECT id, title, descr, parent_id FROM categories WHERE id = :id');
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $category = $stmt->fetch();
+
+        return $category !== false ? $category : null;
     }
 }

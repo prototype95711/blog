@@ -18,6 +18,7 @@ services:
       DB_USERNAME: ${MYSQL_USER:-blog}
       DB_PASSWORD: ${MYSQL_PASSWORD:-changeme}
       CSS_MINIFY: ${CSS_MINIFY:-false}
+      CATEGORIES_PER_PAGE: ${CATEGORIES_PER_PAGE:-20}
     volumes:
       - blog-mysql-data:/var/lib/mysql
       - ./public:/var/www/html/public

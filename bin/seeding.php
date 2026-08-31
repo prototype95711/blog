@@ -38,15 +38,26 @@ if ($clear) {
 
 echo "Seeding categories...\n";
 
-$cat = $pdo->prepare('INSERT INTO categories (title, descr, parent_id) VALUES (:title, :descr, 0)');
+$cat = $pdo->prepare('INSERT INTO categories (title, descr, parent_id) VALUES (:title, :descr, :parent)');
 $categoryIds = [];
+$nestFactor = 0.3;
+$parentId = 0;
+$max = mt_getrandmax();
 
 for ($i = 0; $i < $categoriesCount; $i++) {
     $cat->execute([
         'title' => ucfirst($faker->words(2, true)),
         'descr' => $faker->sentence(12),
+        'parent' => $parentId
     ]);
-    $categoryIds[] = (int) $pdo->lastInsertId();
+    $categoryId = (int) $pdo->lastInsertId();
+
+    if ($categoryId > 0) {
+        $categoryIds[$categoryId] = $categoryId;
+        $parentId = mt_rand() / $max < $nestFactor
+            ? $categoryId
+            : 0;
+    }
 }
 
 if (empty($categoryIds)) {

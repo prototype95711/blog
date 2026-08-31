@@ -30,6 +30,11 @@ class Blog
         return $this->categories->getList($params, $perPage);
     }
 
+    public function getCategory(int $id): ?array
+    {
+        return $this->categories->get($id);
+    }
+
     public function getPostsSortingsVariants(): array
     {
         $sotringsToDisplay = [];
