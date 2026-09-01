@@ -114,4 +114,22 @@ class CategoryRepository extends ASortedRepository
 
         return $category !== false ? $category : null;
     }
+
+    public function getPath(int $id): array
+    {
+        $path = [];
+        $current = $this->get($id);
+
+        while ($current !== null) {
+            array_unshift($path, $current);
+
+            if (empty($current['parent_id'])) {
+                break;
+            }
+
+            $current = $this->get((int) $current['parent_id']);
+        }
+
+        return $path;
+    }
 }

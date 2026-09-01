@@ -35,6 +35,11 @@ class Blog
         return $this->categories->get($id);
     }
 
+    public function getCategoryPath(int $id): array
+    {
+        return $this->categories->getPath($id);
+    }
+
     public function getCategoriesWithPosts(array $params = [], int $perPage = 10): IPagination
     {
         return $this->categories->getList(

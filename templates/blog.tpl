@@ -9,6 +9,26 @@
     {$selected_category_id = 0}
 {/if}
 
+{capture name="breadcrumbs"}
+    <ol class="breadcrumbs-list">
+        <li class="breadcrumbs-item"><a href="/">Home</a></li>
+        {if $selected_category_id}
+            <li class="breadcrumbs-item"><a href="/blog.php">Blog</a></li>
+            {foreach from=$categoryPath item=crumb name=breadcrumb_categories}
+                <li class="breadcrumbs-item">
+                    {if $smarty.foreach.breadcrumb_categories.last}
+                        <span aria-current="page">{$crumb.title nofilter}</span>
+                    {else}
+                        <a href="/blog.php?category_id={$crumb.id}">{$crumb.title nofilter}</a>
+                    {/if}
+                </li>
+            {/foreach}
+        {else}
+            <li class="breadcrumbs-item"><span aria-current="page">Blog</span></li>
+        {/if}
+    </ol>
+{/capture}
+
 {capture name="sidebar"}
     <div class="sidebar-block">
         <h3 class="sidebar-block-title">Category</h3>

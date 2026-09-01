@@ -36,6 +36,8 @@ try {
 
     $selectedCategory = $categoryId > 0 ? $blog->getCategory($categoryId) : null;
 
+    $categoryPath = $selectedCategory ? $blog->getCategoryPath($selectedCategory['id']) : [];
+
 } catch (Throwable $e) {
     die('error: ' . $e->getMessage());
 }
@@ -51,6 +53,7 @@ Template::getSmarty()->assign([
     'categoriesPaginator' => $categoriesPaginator,
     'categories' => $categories,
     'selectedCategory' => $selectedCategory,
+    'categoryPath' => $categoryPath,
     'postSortings' => $postSortings
 ]);
 Template::getSmarty()->display('blog.tpl');

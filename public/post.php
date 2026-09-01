@@ -24,6 +24,7 @@ try {
 }
 
 $relatedPosts = [];
+$categoryPath = [];
 
 if ($post === null) {
     http_response_code(404);
@@ -38,6 +39,10 @@ if ($post === null) {
 
         $relatedPosts = $blog->getRelatedPosts($postId, 3);
 
+        if (!empty($post['category_id'])) {
+            $categoryPath = $blog->getCategoryPath((int) $post['category_id']);
+        }
+
     } catch (Throwable $e) {
         die($e->getMessage());
     }
@@ -49,7 +54,8 @@ Template::init();
 Template::getSmarty()->assign([
     'params' => $params,
     'post' => $post,
-    'relatedPosts' => $relatedPosts
+    'relatedPosts' => $relatedPosts,
+    'categoryPath' => $categoryPath
 ]);
 
 Template::getSmarty()->display('post.tpl');

@@ -11,6 +11,10 @@
     <body>
         {include file='components/header.tpl'}
 
+        {if $smarty.capture.breadcrumbs}
+            {include file='components/breadcrumbs.tpl'}
+        {/if}
+
         <main>
             <section class="main-content display-content-width">
                 <div class="content {if $smarty.capture.sidebar}with-sidebar{/if}">

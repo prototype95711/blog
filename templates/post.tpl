@@ -1,5 +1,18 @@
 {$title = $post ? "`$post.title` | Blog" : "Post not found | Blog"}
 
+{if $post}
+{capture name="breadcrumbs"}
+    <ol class="breadcrumbs-list">
+        <li class="breadcrumbs-item"><a href="/">Home</a></li>
+        <li class="breadcrumbs-item"><a href="/blog.php">Blog</a></li>
+        {foreach from=$categoryPath item=crumb}
+            <li class="breadcrumbs-item"><a href="/blog.php?category_id={$crumb.id}">{$crumb.title nofilter}</a></li>
+        {/foreach}
+        <li class="breadcrumbs-item"><span aria-current="page">{$post.title nofilter}</span></li>
+    </ol>
+{/capture}
+{/if}
+
 {capture name="sidebar"}
     {if $relatedPosts}
     <div class="sidebar-block">
