@@ -1,16 +1,9 @@
 <?php
 
 use App\Blog;
-use App\Pagination\Paginator;
-use App\Style;
 use App\Template;
-use Detection\MobileDetect;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
-
-\Dotenv\Dotenv::createImmutable(dirname(__DIR__))->safeLoad();
-
-header('Content-Type: text/html; charset=utf-8');
+require_once 'init.php';
 
 $params = $_REQUEST;
 $postId = isset($params['id']) ? max(0, (int) $params['id']) : 0;
@@ -48,9 +41,6 @@ if ($post === null) {
     }
 }
 
-Style::init();
-
-Template::init();
 Template::getSmarty()->assign([
     'params' => $params,
     'post' => $post,

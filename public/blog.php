@@ -1,18 +1,9 @@
 <?php
 
 use App\Blog;
-use App\Style;
 use App\Template;
-use Detection\MobileDetect;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
-
-\Dotenv\Dotenv::createImmutable(dirname(__DIR__))->safeLoad();
-
-$detect = new MobileDetect();
-$isMobile = $detect->isMobile();
-
-header('Content-Type: text/html; charset=utf-8');
+require_once 'init.php';
 
 $posts = $postSortings = [];
 $paginator = null;
@@ -42,10 +33,6 @@ try {
     die('error: ' . $e->getMessage());
 }
 
-Style::init();
-
-Template::init();
-Template::getSmarty()->assign('isMobile', $isMobile);
 Template::getSmarty()->assign([
     'params' => $params,
     'posts' => $posts,

@@ -1,12 +1,9 @@
 <?php
 
 use App\Blog;
-use App\Style;
 use App\Template;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
-
-\Dotenv\Dotenv::createImmutable(dirname(__DIR__))->safeLoad();
+require_once 'init.php';
 
 $params = $_REQUEST;
 $blog = new Blog();
@@ -49,9 +46,6 @@ if ($isAjax) {
         exit;
     }
 
-    Style::init();
-    Template::init();
-
     $html = '';
 
     foreach ($categoriesWithRecentPosts as $category) {
@@ -66,8 +60,6 @@ if ($isAjax) {
     exit;
 }
 
-header('Content-Type: text/html; charset=utf-8');
-
 $categoriesPaginator = null;
 $categoriesWithRecentPosts = [];
 
@@ -78,9 +70,6 @@ try {
     die($e->getMessage());
 }
 
-Style::init();
-
-Template::init();
 Template::getSmarty()->assign([
     'params' => $params,
     'categoriesWithRecentPosts' => $categoriesWithRecentPosts,

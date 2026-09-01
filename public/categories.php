@@ -3,11 +3,7 @@
 use App\Blog;
 use App\Template;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
-
-\Dotenv\Dotenv::createImmutable(dirname(__DIR__))->safeLoad();
-
-header('Content-Type: application/json; charset=utf-8');
+require_once 'init.php';
 
 $isAjax = !empty($_REQUEST['is_ajax']);
 
@@ -23,8 +19,6 @@ if ($isAjax) {
         echo json_encode(['error' => 'Unable to load']);
         exit;
     }
-
-    Template::init();
 
     $html = '';
 
