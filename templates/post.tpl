@@ -30,7 +30,7 @@
                     <div class="blog-post-details-meta">
                         <time>{$post.created_at}</time>
                         {if $post.category_title}
-                            &middot; <a href="/?category_id={$post.category_id}">{$post.category_title}</a>
+                            &middot; <a href="/blog.php?category_id={$post.category_id}">{$post.category_title}</a>
                         {/if}
                         &middot; {$post.views} views
                     </div>

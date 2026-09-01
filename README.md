@@ -10,7 +10,7 @@ Author: Gleb Perfiliev
     - Posts sorting and pagination
     - Views counter
     - Related posts block
-  - Home page with recent blog posts
+  - Home page with categories and recent blog posts
   - Seeding posts and categories. 
 
 # Seeding usage
